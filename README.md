@@ -42,6 +42,21 @@ python app.py
 
 7. Open http://127.0.0.1:5000 in your browser.
 
+Use the difficulty selector in the game to start an Easy, Medium, or Hard
+puzzle. Easy puzzles begin with 45 clues, Medium puzzles with 35 clues, and
+Hard puzzles with 30 clues. Given cells are locked. Use Hint to fill and lock
+one correct empty cell, or Check Puzzle to highlight incorrect entries.
+The timer starts with each new puzzle. After solving, enter a name to save the
+time, difficulty, and hints used to the persistent Top 10 leaderboard.
+
+### Running Tests
+
+From the repository root, run:
+
+```bash
+pytest
+```
+
 ## Project Instructions
 
 Use GitHub Copilot to refactor the code for this game to add more advanced features. The goal is to create a more modern and maintainable codebase and add additional functionality to the final product. You can use any combination of code completion and chat features, like Ask, Edit, or Agent modes.

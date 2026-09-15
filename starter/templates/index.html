@@ -6,13 +6,50 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <h1>Sudoku Game</h1>
-  <div id="sudoku-board"></div>
-  <div class="controls">
+  <main class="app-shell">
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Logic puzzle</p>
+        <h1>Sudoku Game</h1>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button"
+        aria-label="Switch to dark mode" aria-pressed="false">Dark mode</button>
+    </header>
+    <section class="game-toolbar" aria-label="Game settings">
+      <label for="difficulty-selector">Difficulty</label>
+      <select id="difficulty-selector">
+        <option value="easy">Easy</option>
+        <option value="medium" selected>Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <span id="selected-difficulty" class="difficulty-badge" aria-live="polite">Medium</span>
+    </section>
+  <div class="game-status" aria-label="Current game status">
+    <span>Time: <time id="timer" role="timer">00:00</time></span>
+  </div>
+  <div id="sudoku-board" class="sudoku-board" role="grid" aria-label="Sudoku puzzle"></div>
+  <div class="controls" aria-label="Puzzle controls">
     <button id="new-game">New Game</button>
-    <button id="check-solution">Check Solution</button>
+    <button id="hint">Hint</button>
+    <button id="check-puzzle">Check Puzzle</button>
+    <span id="hint-count">Hints used: 0</span>
+    <span id="move-feedback" role="status" aria-live="polite"></span>
     <span id="message"></span>
   </div>
+  <section id="completion" hidden aria-labelledby="completion-heading">
+    <h2 id="completion-heading">Puzzle complete</h2>
+    <p id="completion-summary"></p>
+    <label for="player-name">Player name</label>
+    <input id="player-name" type="text" maxlength="40" autocomplete="name">
+    <button id="save-score" type="button">Save Score</button>
+    <span id="score-feedback" role="status" aria-live="polite"></span>
+  </section>
+  <section id="leaderboard" aria-labelledby="leaderboard-heading">
+    <h2 id="leaderboard-heading">Top 10 Scores</h2>
+    <p id="leaderboard-status" role="status" aria-live="polite"></p>
+    <ol id="score-list"></ol>
+  </section>
+  </main>
   <script src="/static/main.js"></script>
 </body>
 </html>

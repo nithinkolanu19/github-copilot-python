@@ -1,65 +1,205 @@
+:root {
+    color-scheme: light;
+    --page: #f4f7fb;
+    --surface: #ffffff;
+    --surface-alt: #e9eef5;
+    --surface-block: #f8fbff;
+    --text: #17202a;
+    --muted: #4b5a6a;
+    --border: #526273;
+    --border-strong: #17202a;
+    --focus: #005fcc;
+    --button: #075985;
+    --button-hover: #0c4a6e;
+    --prefilled: #d7dee8;
+    --hinted: #d9f3df;
+    --user: #dbeafe;
+    --incorrect: #ffd9dc;
+    --incorrect-border: #a71930;
+    --error-text: #9f1239;
+    --success-text: #166534;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --page: #111827;
+    --surface: #1f2937;
+    --surface-alt: #374151;
+    --surface-block: #253447;
+    --text: #f3f4f6;
+    --muted: #cbd5e1;
+    --border: #94a3b8;
+    --border-strong: #f8fafc;
+    --focus: #7dd3fc;
+    --button: #0369a1;
+    --button-hover: #0284c7;
+    --prefilled: #4b5563;
+    --hinted: #14532d;
+    --user: #1e3a5f;
+    --incorrect: #5b2630;
+    --incorrect-border: #fda4af;
+    --error-text: #fecdd3;
+    --success-text: #bbf7d0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    text-align: center;
+    background: var(--page);
+    color: var(--text);
     margin: 0;
-    padding: 0;
+    padding: 24px 16px 48px;
+}
+
+.app-shell {
+    width: min(960px, 100%);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.eyebrow {
+    margin: 0 0 4px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 h1 {
-    margin-top: 30px;
-    color: #333;
+    margin: 0;
+    color: var(--text);
 }
 
-#sudoku-board {
-    display: inline-block;
-    margin: 30px auto;
-    border: 4px solid #333;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+.theme-toggle {
+    margin: 0;
+}
+
+.game-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 12px auto 8px;
+    color: var(--text);
+    font-weight: bold;
+}
+
+select,
+input {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+select {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 16px;
+}
+
+.difficulty-badge {
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    width: min(540px, 100%);
+    aspect-ratio: 1;
+    margin: 24px auto;
+    border: 3px solid var(--border-strong);
+    background: var(--surface);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
 }
 
 .sudoku-row {
-    display: flex;
+    display: contents;
 }
 
 .sudoku-cell {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #bbb;
+    width: 100%;
+    height: auto;
+    min-width: 0;
+    min-height: 0;
+    border: 1px solid var(--border);
     text-align: center;
-    font-size: 20px;
+    font-size: clamp(16px, 4vw, 28px);
     outline: none;
-    background: #fafafa;
-    transition: background 0.2s;
+    background: var(--surface);
+    color: var(--text);
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.sudoku-cell:nth-child(3n + 3) {
+    border-right: 3px solid var(--border-strong);
+}
+
+.sudoku-row.block-boundary .sudoku-cell {
+    border-bottom: 3px solid var(--border-strong);
 }
 
 .sudoku-cell:focus {
-    background: #e0f7fa;
+    position: relative;
+    z-index: 1;
+    outline: 3px solid var(--focus);
+    outline-offset: -3px;
+}
+
+.sudoku-cell.block-alt {
+    background: var(--surface-block);
 }
 
 .sudoku-cell.prefilled {
-    background: #e0e0e0;
+    background: var(--prefilled) !important;
     font-weight: bold;
-    color: #333;
+    color: var(--text);
+}
+
+.sudoku-cell.hinted {
+    background: var(--hinted) !important;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.sudoku-cell.user-entry {
+    background: var(--user) !important;
+    color: var(--text);
+    font-weight: 600;
 }
 
 .sudoku-cell.incorrect {
-    background: #ffcdd2;
-}
-
-.sudoku-cell:nth-child(3),
-.sudoku-cell:nth-child(6) {
-    border-right: 3px solid #333;
-}
-
-.sudoku-row:nth-child(3) .sudoku-cell,
-.sudoku-row:nth-child(6) .sudoku-cell {
-    border-bottom: 3px solid #333;
+    background: var(--incorrect) !important;
+    border: 2px dashed var(--incorrect-border);
+    color: var(--text);
+    text-decoration: underline wavy var(--incorrect-border);
 }
 
 .controls {
     margin: 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
 }
 
 button {
@@ -67,7 +207,7 @@ button {
     margin: 0 8px;
     font-size: 16px;
     border: none;
-    background: #1976d2;
+    background: var(--button);
     color: #fff;
     border-radius: 4px;
     cursor: pointer;
@@ -75,11 +215,88 @@ button {
 }
 
 button:hover {
-    background: #1565c0;
+    background: var(--button-hover);
+}
+
+button:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+}
+
+.game-status {
+    margin: 16px auto;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 #message {
-    margin-left: 20px;
     font-size: 16px;
-    color: #d32f2f;
+}
+
+.error-message {
+    color: var(--error-text);
+}
+
+.success-message {
+    color: var(--success-text);
+}
+
+#move-feedback {
+    display: block;
+    min-height: 20px;
+    color: var(--error-text);
+    font-weight: 600;
+}
+
+#completion,
+#leaderboard {
+    width: min(520px, calc(100% - 32px));
+    margin: 24px auto;
+    padding: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#completion h2,
+#leaderboard h2 {
+    margin-top: 0;
+}
+
+#player-name {
+    min-height: 32px;
+    margin: 8px;
+    padding: 4px 8px;
+    font-size: 16px;
+}
+
+#score-list {
+    margin: 0;
+    padding-left: 28px;
+    text-align: left;
+}
+
+#score-list li {
+    padding: 4px 0;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 16px 8px 32px;
+    }
+
+    .app-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .theme-toggle {
+        align-self: stretch;
+    }
+
+    #completion,
+    #leaderboard {
+        width: calc(100% - 16px);
+    }
 }
