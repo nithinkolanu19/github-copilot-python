@@ -1,3 +1,5 @@
+import pytest
+
 import app
 import sudoku_logic
 
@@ -149,6 +151,20 @@ def test_new_route_returns_requested_number_of_clues(client):
     puzzle = response.get_json()['puzzle']
     assert len(puzzle) == sudoku_logic.SIZE
     assert sum(cell != sudoku_logic.EMPTY for row in puzzle for cell in row) == 40
+
+
+def test_generate_puzzle_rejects_impossible_unique_solution_clue_counts():
+    for clues in (0, 16, 82, True):
+        with pytest.raises(ValueError, match='between 17 and 81'):
+            sudoku_logic.generate_puzzle(clues)
+
+
+def test_new_route_rejects_impossible_unique_solution_clue_counts(client):
+    for clues in (0, 16, 82):
+        response = client.get('/new', query_string={'clues': clues})
+
+        assert response.status_code == 400
+        assert response.get_json() == {'error': 'Clues must be between 17 and 81'}
 
 
 def test_check_route_requires_game_in_progress(client):

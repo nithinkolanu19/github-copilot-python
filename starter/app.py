@@ -47,8 +47,13 @@ def new_game():
             clues = int(request.args.get('clues', 35))
         except (TypeError, ValueError):
             return jsonify({'error': 'Clues must be a valid number'}), 400
-        if clues < 0 or clues > sudoku_logic.SIZE * sudoku_logic.SIZE:
-            return jsonify({'error': 'Clues must be between 0 and 81'}), 400
+        if clues < sudoku_logic.MIN_UNIQUE_CLUES or clues > sudoku_logic.SIZE * sudoku_logic.SIZE:
+            return jsonify({
+                'error': (
+                    f'Clues must be between {sudoku_logic.MIN_UNIQUE_CLUES} '
+                    f'and {sudoku_logic.SIZE * sudoku_logic.SIZE}'
+                )
+            }), 400
         puzzle, solution = sudoku_logic.generate_puzzle(clues)
         difficulty = 'medium'
     CURRENT['puzzle'] = puzzle

@@ -3,6 +3,7 @@ import random
 
 SIZE = 9
 EMPTY = 0
+MIN_UNIQUE_CLUES = 17
 DIFFICULTY_CLUES = {
     'easy': 45,
     'medium': 35,
@@ -106,6 +107,16 @@ def remove_cells(board, clues):
             attempts -= 1
 
 def generate_puzzle(clues=35):
+    if (
+        not isinstance(clues, int)
+        or isinstance(clues, bool)
+        or clues < MIN_UNIQUE_CLUES
+        or clues > SIZE * SIZE
+    ):
+        raise ValueError(
+            f'Clues must be an integer between {MIN_UNIQUE_CLUES} and {SIZE * SIZE}'
+        )
+
     while True:
         solution = create_empty_board()
         fill_board(solution)
